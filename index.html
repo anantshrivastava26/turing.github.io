@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turing Machine Simulator</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #32323c; color: white; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #3c3c4c; }
+        input[type="text"] { width: 80%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; background-color: #6495ed; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #3a6fa5; }
+        #result { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Turing Machine Simulator</h1>
+        <label>Enter Tape Data (Binary format, e.g., 0101):</label><br>
+        <input type="text" id="tapeField" placeholder="Enter tape data"><br>
+        
+        <button onclick="performAction('increment_binary')">Increment Binary</button>
+        <button onclick="performAction('check_palindrome')">Check Palindrome</button>
+        <button onclick="performAction('check_even_ones')">Check Even 1's</button>
+        <button onclick="performAction('ones_complement')">Find 1's Complement</button>
+        <button onclick="performAction('twos_complement')">Find 2's Complement</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function performAction(action) {
+            const tape = document.getElementById("tapeField").value;
+
+            fetch('/perform_action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, tape })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").textContent = "Result: " + data.result;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
